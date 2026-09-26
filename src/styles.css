@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 :root {
   font-family: 'DM Sans', system-ui, sans-serif;
-  color: #f4f8f6;
-  background: #08110e;
+  color: #3d3437;
+  background: #f4f0e7;
   font-synthesis: none;
-  --green: #50e3a4;
-  --muted: #81958d;
-  --panel: rgba(17, 31, 27, 0.76);
-  --line: rgba(209, 255, 235, 0.09);
+  --green: #7d5f72;
+  --green-light: #b091a3;
+  --coral: #df806d;
+  --ink: #3d3437;
+  --muted: #7c7275;
+  --panel: rgba(255, 253, 248, 0.9);
+  --line: rgba(103, 78, 92, 0.14);
 }
 * {
   box-sizing: border-box;
@@ -20,8 +23,8 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 75% 5%, rgba(27, 158, 107, 0.14), transparent 28rem),
-    radial-gradient(circle at 0 85%, rgba(45, 83, 115, 0.14), transparent 30rem), #08110e;
+    radial-gradient(circle at 78% 3%, rgba(223, 128, 109, 0.13), transparent 28rem),
+    radial-gradient(circle at 0 85%, rgba(125, 95, 114, 0.13), transparent 30rem), #f4f0e7;
 }
 button,
 input {
@@ -903,4 +906,224 @@ main {
     width: max-content;
     margin-top: 12px;
   }
+}
+
+/* Warm wellness palette */
+.header {
+  background: rgba(250, 247, 239, 0.88);
+}
+.brand {
+  color: var(--ink);
+}
+.brand strong,
+.weekly b,
+.recommend-icon {
+  color: var(--green);
+}
+.brand-mark {
+  color: var(--green);
+  border-color: rgba(125, 95, 114, 0.22);
+  background: rgba(125, 95, 114, 0.1);
+}
+.system {
+  color: #6e6065;
+  background: rgba(255, 253, 248, 0.65);
+}
+.system i,
+.badge i {
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(125, 95, 114, 0.4);
+}
+.profile {
+  color: #695b61;
+}
+.profile small,
+.nav-link small {
+  color: #918589;
+}
+.profile b {
+  color: #f8f4eb;
+  background: linear-gradient(135deg, #a58498, #705366);
+}
+.sidebar {
+  background: rgba(239, 235, 224, 0.72);
+}
+.sidebar > .micro,
+.weekly > small,
+.disclaimer,
+.map-hint {
+  color: #84787c;
+}
+.nav-link {
+  color: #74686c;
+}
+.nav-link:hover {
+  color: var(--ink);
+  background: rgba(255, 253, 248, 0.64);
+}
+.nav-link.active {
+  color: #63485a;
+  background: linear-gradient(100deg, rgba(125, 95, 114, 0.17), rgba(255, 253, 248, 0.55));
+  border-color: rgba(125, 95, 114, 0.2);
+  box-shadow: inset 3px 0 var(--green);
+}
+.weekly,
+.card,
+.search {
+  background: var(--panel);
+  border-color: var(--line);
+  box-shadow:
+    0 18px 50px rgba(64, 79, 69, 0.09),
+    inset 0 1px rgba(255, 255, 255, 0.7);
+}
+.eyebrow {
+  color: #7b596e;
+}
+.micro {
+  color: #7b596e;
+}
+.page-heading > p:last-child,
+.recommendation > div > p:not(.eyebrow),
+.stretch-card > p:not(.eyebrow),
+.insight > p:not(.eyebrow),
+.reminder > p:not(.eyebrow) {
+  color: var(--muted);
+}
+.search {
+  border-color: rgba(125, 95, 114, 0.22);
+}
+.search > span,
+.search input::placeholder,
+.library-search kbd,
+.meta {
+  color: #8e8286;
+}
+.search input {
+  color: var(--ink);
+}
+.primary {
+  color: #fffdf8;
+  background: linear-gradient(135deg, #98778b, #735468);
+  box-shadow: 0 8px 22px rgba(115, 84, 104, 0.2);
+}
+.secondary {
+  color: #634f5b;
+  background: rgba(125, 95, 114, 0.07);
+  border-color: rgba(125, 95, 114, 0.16);
+}
+.badge {
+  color: #675560;
+  background: rgba(246, 241, 231, 0.82);
+}
+.body-view-label {
+  fill: #81727b;
+}
+.body {
+  stroke: rgba(114, 91, 105, 0.42);
+}
+.zone {
+  fill: rgba(125, 95, 114, 0.27);
+  stroke: rgba(112, 78, 99, 0.72);
+}
+.zone:hover {
+  fill: rgba(125, 95, 114, 0.58);
+  filter: drop-shadow(0 0 8px rgba(125, 95, 114, 0.35));
+}
+.zone.selected {
+  fill: var(--coral);
+  stroke: #b85f50;
+  filter: drop-shadow(0 0 9px rgba(223, 128, 109, 0.42));
+}
+.recommend-icon {
+  background: rgba(125, 95, 114, 0.09);
+  border-color: rgba(125, 95, 114, 0.15);
+}
+.minutes,
+.modal-columns > div {
+  background: rgba(125, 95, 114, 0.045);
+}
+.progress {
+  background: rgba(102, 81, 94, 0.12);
+}
+.progress i,
+.bars i:nth-child(4) {
+  background: linear-gradient(90deg, #7d5f72, #b797a9);
+}
+.bars i {
+  background: rgba(125, 95, 114, 0.28);
+}
+.stretch-visual {
+  background:
+    radial-gradient(circle, rgba(223, 128, 109, 0.13), transparent 60%), rgba(125, 95, 114, 0.04);
+}
+.stretch-visual > span {
+  color: var(--coral);
+}
+.form-good {
+  border-color: rgba(125, 95, 114, 0.25);
+  background: rgba(125, 95, 114, 0.08);
+}
+.form-good > b {
+  color: var(--green);
+  background: rgba(125, 95, 114, 0.1);
+}
+.minutes > small,
+.steps li > b,
+.steps small,
+.stretch-visual small,
+.privacy,
+.form-good small,
+.stop,
+.modal-muscle,
+.modal-columns > div {
+  color: #83777b;
+}
+.camera {
+  background:
+    radial-gradient(circle at 50% 65%, rgba(162, 108, 139, 0.2), transparent 35%),
+    linear-gradient(145deg, #382b34, #1d171b);
+}
+.camera > button {
+  color: #f1e7eb;
+  background: rgba(35, 25, 31, 0.78);
+}
+.camera-caption span:last-child {
+  color: #d7a7bd;
+}
+.camera-caption {
+  color: #f4edf0;
+}
+.camera-caption small,
+.timer small {
+  color: #a08f96;
+}
+.timer {
+  color: #6f6267;
+}
+.timer b {
+  color: var(--ink);
+}
+.modal {
+  color: var(--ink);
+}
+.modal-close {
+  color: #667b73;
+  background: rgba(125, 95, 114, 0.07);
+}
+.modal-backdrop {
+  background: rgba(45, 53, 48, 0.58);
+}
+.demo-figure {
+  background: radial-gradient(circle, rgba(223, 128, 109, 0.14), transparent 50%), #f7f3ea;
+}
+.stick i {
+  border-color: var(--coral);
+}
+.stick b,
+.stick span,
+.stick em {
+  background: var(--coral);
+}
+.mobile-nav {
+  background: rgba(250, 247, 239, 0.95);
 }

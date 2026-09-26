@@ -62,7 +62,7 @@ function BodyFigure({ label, zones, selected, onSelect, offset }) {
       <text className="body-view-label" x="220" y="24" textAnchor="middle">
         {label}
       </text>
-      <ellipse cx="220" cy="245" rx="172" ry="205" fill="#10b981" opacity=".035" />
+      <ellipse cx="220" cy="245" rx="172" ry="205" fill="#7d5f72" opacity=".04" />
       <ellipse className="body" cx="220" cy="72" rx="31" ry="38" />
       <path className="body" d={BODY_OUTLINE} transform="translate(0 10)" />
       <g transform="translate(0 10)">
