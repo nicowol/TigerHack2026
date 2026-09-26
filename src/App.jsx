@@ -1,2 +1,46 @@
-import{useState}from'react';import{Header,Navigation}from'./components/Shell.jsx';import Diagnose from'./components/Diagnose.jsx';import Library from'./components/Library.jsx';import LiveSession from'./components/LiveSession.jsx';import StretchModal from'./components/StretchModal.jsx';import{findStretch}from'./data/stretches.js';
-export default function App(){const[view,setView]=useState('diagnose'),[selected,setSelected]=useState('chest'),[activeStretch,setActiveStretch]=useState(findStretch('doorway-pec')),[modalStretch,setModalStretch]=useState(null);function start(s){setActiveStretch(s);setModalStretch(null);setView('live');window.scrollTo({top:0,behavior:'smooth'})}return <><Header/><Navigation view={view} onChange={setView}/><main>{view==='diagnose'&&<Diagnose selected={selected} onSelect={setSelected} onStart={start} onDetails={setModalStretch}/>} {view==='library'&&<Library onStart={start} onDetails={setModalStretch}/>} {view==='live'&&<LiveSession stretch={activeStretch} onStop={()=>setView('diagnose')}/>}</main><StretchModal stretch={modalStretch} onClose={()=>setModalStretch(null)} onStart={start}/></>}
+import { useState } from 'react'
+import { Header, Navigation } from './components/Shell.jsx'
+import Diagnose from './components/Diagnose.jsx'
+import Library from './components/Library.jsx'
+import LiveSession from './components/LiveSession.jsx'
+import StretchModal from './components/StretchModal.jsx'
+import { findStretch } from './data/stretches.js'
+export default function App() {
+  const [view, setView] = useState('diagnose')
+  const [selectedMuscle, setSelectedMuscle] = useState('chest')
+  const [activeStretch, setActiveStretch] = useState(findStretch('doorway-pec'))
+  const [modalStretch, setModalStretch] = useState(null)
+
+  function startFlow(stretch) {
+    setActiveStretch(stretch)
+    setModalStretch(null)
+    setView('live')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return (
+    <>
+      <Header />
+      <Navigation view={view} onChange={setView} />
+      <main>
+        {view === 'diagnose' && (
+          <Diagnose
+            selected={selectedMuscle}
+            onSelect={setSelectedMuscle}
+            onStart={startFlow}
+            onDetails={setModalStretch}
+          />
+        )}
+        {view === 'library' && <Library onStart={startFlow} onDetails={setModalStretch} />}
+        {view === 'live' && (
+          <LiveSession stretch={activeStretch} onStop={() => setView('diagnose')} />
+        )}
+      </main>
+      <StretchModal
+        stretch={modalStretch}
+        onClose={() => setModalStretch(null)}
+        onStart={startFlow}
+      />
+    </>
+  )
+}
