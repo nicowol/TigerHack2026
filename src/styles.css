@@ -343,12 +343,18 @@ main {
   position: relative;
   display: flex;
   justify-content: center;
-  height: 390px;
+  height: 410px;
 }
 .body-map {
   width: 100%;
   height: 100%;
-  max-width: 420px;
+  max-width: 760px;
+}
+.body-view-label {
+  fill: #607970;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
 }
 .body {
   fill: url(#bodyFill);
@@ -873,7 +879,7 @@ main {
     font-size: 15px;
   }
   .body-map-wrap {
-    height: 330px;
+    height: 300px;
   }
   .recommendation {
     display: block;
