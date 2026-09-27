@@ -392,6 +392,75 @@ main {
   gap: 16px;
   padding: 22px;
 }
+.results-section {
+  margin-top: 32px;
+}
+.results-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+.results-heading h2 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 30px);
+  letter-spacing: -0.045em;
+}
+.results-heading > span {
+  flex: none;
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.recommendation-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+}
+.recommendation-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.recommendation-card .recommend-icon {
+  flex: 0 0 38px;
+  height: 38px;
+  font-size: 18px;
+}
+.recommendation-card h3 {
+  margin: 0 0 13px;
+  font-size: 19px;
+  letter-spacing: -0.035em;
+}
+.helps-with {
+  flex: 1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.helps-with strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #7b596e;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.results-disclaimer {
+  margin-top: 18px;
+}
 .recommend-icon {
   display: grid;
   place-items: center;
@@ -731,6 +800,13 @@ main {
   color: #779087;
   font-size: 11px;
 }
+.modal-benefit {
+  max-width: 520px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
 .demo-figure {
   height: 180px;
   display: grid;
@@ -813,6 +889,16 @@ main {
   display: block;
   margin: 18px 0 0 auto;
 }
+.stretch-warning {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--coral);
+  border-radius: 8px;
+  color: #74666b;
+  background: rgba(223, 128, 109, 0.08);
+  font-size: 11px;
+  line-height: 1.6;
+}
 .mobile-nav {
   display: none;
 }
@@ -886,6 +972,12 @@ main {
   }
   .recommendation {
     display: block;
+  }
+  .results-heading {
+    align-items: start;
+  }
+  .recommendations-grid {
+    grid-template-columns: 1fr;
   }
   .recommend-icon {
     margin-bottom: 15px;

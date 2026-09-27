@@ -11,9 +11,12 @@ export default function StretchModal({ stretch, onClose, onStart }) {
         <button className="modal-close" onClick={onClose}>
           ×
         </button>
-        <span className="badge">{stretch.area}</span>
+        <span className="badge">
+          {stretch.area} · {stretch.difficulty} · {stretch.duration} sec
+        </span>
         <h2>{stretch.name}</h2>
         <p className="modal-muscle">{stretch.muscle}</p>
+        <p className="modal-benefit">{stretch.helpsWith}</p>
         <div className="demo-figure">
           <div className="stick">
             <i />
@@ -37,6 +40,9 @@ export default function StretchModal({ stretch, onClose, onStart }) {
             </ul>
           </div>
         </div>
+        <p className="stretch-warning">
+          <strong>Move safely:</strong> {stretch.warning}
+        </p>
         <button className="primary modal-start" onClick={() => onStart(stretch)}>
           Start this flow →
         </button>

@@ -5,8 +5,11 @@ export default function Library({ onStart, onDetails }) {
   const [query, setQuery] = useState('')
   const filtered = useMemo(
     () =>
-      stretches.filter((s) =>
-        `${s.name} ${s.area} ${s.muscle}`.toLowerCase().includes(query.toLowerCase()),
+      stretches.filter((stretch) =>
+        [stretch.name, stretch.area, stretch.muscle, ...stretch.tags]
+          .join(' ')
+          .toLowerCase()
+          .includes(query.toLowerCase()),
       ),
     [query],
   )
@@ -26,23 +29,23 @@ export default function Library({ onStart, onDetails }) {
         <kbd>⌘ K</kbd>
       </label>
       <div className="library-grid">
-        {filtered.map((s) => (
-          <article className="card stretch-card" key={s.id}>
+        {filtered.map((stretch) => (
+          <article className="card stretch-card" key={stretch.id}>
             <div className="stretch-visual">
               <span>⌁</span>
-              <small>{s.area}</small>
+              <small>{stretch.area}</small>
             </div>
-            <p className="eyebrow">{s.muscle}</p>
-            <h2>{s.name}</h2>
-            <p>{s.instructions}</p>
+            <p className="eyebrow">{stretch.muscle}</p>
+            <h2>{stretch.name}</h2>
+            <p>{stretch.instructions}</p>
             <div className="meta">
-              ◷ {s.duration} sec <i /> Gentle
+              ◷ {stretch.duration} sec <i /> {stretch.difficulty} <i /> {stretch.equipment}
             </div>
             <div className="actions">
-              <button className="primary" onClick={() => onStart(s)}>
+              <button className="primary" onClick={() => onStart(stretch)}>
                 Start flow
               </button>
-              <button className="secondary" onClick={() => onDetails(s)}>
+              <button className="secondary" onClick={() => onDetails(stretch)}>
                 Details
               </button>
             </div>
@@ -52,7 +55,7 @@ export default function Library({ onStart, onDetails }) {
       {!filtered.length && (
         <div className="card empty">
           <h2>No stretches found</h2>
-          <p>Try “shoulder”, “forearm”, or “back”.</p>
+          <p>Try “shoulder”, “wrist”, “hips”, “running”, or “back”.</p>
         </div>
       )}
     </Page>

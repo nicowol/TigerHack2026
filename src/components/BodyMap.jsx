@@ -16,6 +16,11 @@ const FRONT_ZONES = [
     'M126 280Q142 290 153 276L141 351Q133 371 115 354Z M314 280Q298 290 287 276L299 351Q307 371 325 354Z',
   ],
   ['core', 'M175 226Q220 244 265 226L269 293Q220 311 171 293Z'],
+  ['hips', 'M174 296Q220 312 266 296L260 332Q220 344 180 332Z'],
+  [
+    'calves',
+    'M183 379L211 379L207 439Q204 454 192 454Q181 451 181 436Z M229 379L257 379L259 436Q259 451 248 454Q236 454 233 439Z',
+  ],
 ]
 
 const BACK_ZONES = [
@@ -23,7 +28,8 @@ const BACK_ZONES = [
     'shoulders',
     'M140 143Q157 117 193 124L187 163Q158 174 139 158Z M300 143Q283 117 247 124L253 163Q282 174 301 158Z',
   ],
-  ['back', 'M174 145Q220 126 266 145L267 238Q220 259 173 238Z'],
+  ['back', 'M174 145Q220 126 266 145L267 226Q220 245 173 226Z'],
+  ['lower-back', 'M174 232Q220 248 266 232L268 291Q220 306 172 291Z'],
   [
     'arms',
     'M139 170Q158 176 169 193L154 269Q143 289 127 274Z M301 170Q282 176 271 193L286 269Q297 289 313 274Z',
@@ -32,7 +38,15 @@ const BACK_ZONES = [
     'forearms',
     'M126 280Q142 290 153 276L141 351Q133 371 115 354Z M314 280Q298 290 287 276L299 351Q307 371 325 354Z',
   ],
-  ['core', 'M174 245Q220 263 266 245L269 299Q220 314 171 299Z'],
+  ['hips', 'M174 296Q220 312 266 296L260 332Q220 344 180 332Z'],
+  [
+    'hamstrings',
+    'M181 335Q195 329 211 335L211 388L183 388Z M229 335Q245 329 259 335L257 388L229 388Z',
+  ],
+  [
+    'calves',
+    'M183 392L211 392L207 439Q204 454 192 454Q181 451 181 436Z M229 392L257 392L259 436Q259 451 248 454Q236 454 233 439Z',
+  ],
 ]
 
 function MuscleZones({ zones, selected, onSelect, view }) {
@@ -92,8 +106,8 @@ export default function BodyMap({ selected, onSelect }) {
         </desc>
         <defs>
           <linearGradient id="bodyFill">
-            <stop stopColor="#9ab8ad" stopOpacity=".22" />
-            <stop offset="1" stopColor="#58736d" stopOpacity=".08" />
+            <stop stopColor="#b5a4ae" stopOpacity=".24" />
+            <stop offset="1" stopColor="#77636f" stopOpacity=".09" />
           </linearGradient>
         </defs>
 
