@@ -788,8 +788,6 @@ export default function StretchModal({ stretch, onClose, onStart }) {
         </span>
         <h2>{stretch.name}</h2>
         <p className="modal-muscle">{stretch.muscle}</p>
-        <p className="eyebrow stretch-description-label">ABOUT THIS STRETCH</p>
-        <p className="modal-description">{stretch.description}</p>
         <p className="modal-benefit">{stretch.helpsWith}</p>
         <figure className="demo-figure">
           <svg

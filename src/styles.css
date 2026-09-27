@@ -466,6 +466,16 @@ main {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+.stretch-summary {
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.stretch-summary .eyebrow {
+  display: block;
+  margin: 0 0 4px;
+}
 .results-disclaimer {
   margin-top: 18px;
 }
