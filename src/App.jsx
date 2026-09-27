@@ -10,6 +10,7 @@ export default function App() {
   const [selectedMuscle, setSelectedMuscle] = useState('chest')
   const [activeStretch, setActiveStretch] = useState(findStretch('doorway-pec'))
   const [modalStretch, setModalStretch] = useState(null)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   function startFlow(stretch) {
     setActiveStretch(stretch)
@@ -21,8 +22,13 @@ export default function App() {
   return (
     <>
       <Header />
-      <Navigation view={view} onChange={setView} />
-      <main>
+      <Navigation
+        view={view}
+        onChange={setView}
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed((current) => !current)}
+      />
+      <main className={`main-content${sidebarCollapsed ? ' sidebar-is-collapsed' : ''}`}>
         {view === 'diagnose' && (
           <Diagnose
             selected={selectedMuscle}

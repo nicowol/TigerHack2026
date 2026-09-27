@@ -20,28 +20,44 @@ export function Header() {
     </header>
   )
 }
-export function Navigation({ view, onChange }) {
+export function Navigation({ view, onChange, collapsed, onToggle }) {
   const items = [
     ['diagnose', 'Find relief'],
     ['library', 'Stretch library'],
     ['live', 'Live session'],
   ]
-  const links = items.map(([id, label], i) => (
-    <button
-      key={id}
-      className={`nav-link ${view === id ? 'active' : ''}`}
-      onClick={() => onChange(id)}
-    >
-      <span>{icons[id]}</span>
-      {label}
-      <small>0{i + 1}</small>
-    </button>
-  ))
+  function renderLinks(location) {
+    return items.map(([id, label], index) => (
+      <button
+        key={`${location}-${id}`}
+        className={`nav-link ${view === id ? 'active' : ''}`}
+        onClick={() => onChange(id)}
+        aria-label={label}
+        title={collapsed && location === 'desktop' ? label : undefined}
+      >
+        <span className="nav-icon">{icons[id]}</span>
+        <span className="nav-label">{label}</span>
+        <small>0{index + 1}</small>
+      </button>
+    ))
+  }
+
   return (
     <>
-      <aside className="sidebar">
-        <p className="micro">WORKSPACE</p>
-        <nav>{links}</nav>
+      <aside className={`sidebar${collapsed ? ' sidebar-collapsed' : ''}`}>
+        <div className="sidebar-heading">
+          <p className="micro">WORKSPACE</p>
+          <button
+            className="sidebar-toggle"
+            onClick={onToggle}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-expanded={!collapsed}
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {collapsed ? '›' : '‹'}
+          </button>
+        </div>
+        <nav>{renderLinks('desktop')}</nav>
         <div className="weekly">
           <div>
             <span className="micro">WEEKLY RHYTHM</span>
@@ -55,7 +71,7 @@ export function Navigation({ view, onChange }) {
           <small>One short reset at a time.</small>
         </div>
       </aside>
-      <nav className="mobile-nav">{links}</nav>
+      <nav className="mobile-nav">{renderLinks('mobile')}</nav>
     </>
   )
 }
