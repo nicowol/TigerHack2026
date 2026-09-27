@@ -36,9 +36,9 @@ function drawPose(canvas, video, landmarks) {
   }
 
   const context = canvas.getContext('2d')
-  if (!context) return false
+  if (!context) return 0
   context.clearRect(0, 0, width, height)
-  if (!landmarks) return false
+  if (!landmarks) return 0
 
   const visibleBodyPoints = [11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28].filter((index) =>
     isVisible(landmarks[index]),
@@ -70,7 +70,7 @@ function drawPose(canvas, video, landmarks) {
     context.fill()
   }
 
-  return visibleBodyPoints.length >= 3
+  return visibleBodyPoints.length
 }
 
 function cameraErrorMessage(error) {
@@ -92,6 +92,7 @@ export default function LiveSession({ stretch, onStop }) {
   const [cameraState, setCameraState] = useState('idle')
   const [cameraError, setCameraError] = useState('')
   const [poseDetected, setPoseDetected] = useState(false)
+  const [poseQuality, setPoseQuality] = useState('missing')
   const [formAssessment, setFormAssessment] = useState(null)
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
@@ -102,6 +103,7 @@ export default function LiveSession({ stretch, onStop }) {
   const lastVideoTimeRef = useRef(-1)
   const lastInferenceAtRef = useRef(0)
   const poseDetectedRef = useRef(false)
+  const poseQualityRef = useRef('missing')
   const formAssessmentRef = useRef(null)
   const assessmentCandidateRef = useRef({ key: '', count: 0, value: null })
   const stretchIdRef = useRef(stretch.id)
@@ -132,6 +134,12 @@ export default function LiveSession({ stretch, onStop }) {
     if (poseDetectedRef.current === nextValue) return
     poseDetectedRef.current = nextValue
     setPoseDetected(nextValue)
+  }
+
+  function updatePoseQuality(nextValue) {
+    if (poseQualityRef.current === nextValue) return
+    poseQualityRef.current = nextValue
+    setPoseQuality(nextValue)
   }
 
   function updateFormAssessment(nextValue) {
@@ -177,10 +185,12 @@ export default function LiveSession({ stretch, onStop }) {
     lastVideoTimeRef.current = -1
     lastInferenceAtRef.current = 0
     poseDetectedRef.current = false
+    poseQualityRef.current = 'missing'
     formAssessmentRef.current = null
     assessmentCandidateRef.current = { key: '', count: 0, value: null }
     if (updateState) {
       setPoseDetected(false)
+      setPoseQuality('missing')
       setFormAssessment(null)
     }
 
@@ -263,8 +273,12 @@ export default function LiveSession({ stretch, onStop }) {
           try {
             const result = landmarker.detectForVideo(currentVideo, now)
             const landmarks = result.landmarks?.[0]
-            const foundPose = drawPose(canvasRef.current, currentVideo, landmarks)
+            const visiblePointCount = drawPose(canvasRef.current, currentVideo, landmarks)
+            const foundPose = visiblePointCount >= 3
+            const nextPoseQuality =
+              visiblePointCount >= 10 ? 'ready' : visiblePointCount >= 3 ? 'partial' : 'missing'
             updatePoseDetected(foundPose)
+            updatePoseQuality(nextPoseQuality)
             updateFormAssessment(
               foundPose && landmarks
                 ? assessStretchForm(
@@ -369,6 +383,13 @@ export default function LiveSession({ stretch, onStop }) {
     : activeAssessment?.status === 'tracking-only'
       ? '•'
       : '✓'
+  const cameraGlowClass = cameraState === 'active' ? ` pose-glow-${poseQuality}` : ''
+  const poseStatusLabel =
+    poseQuality === 'ready'
+      ? 'Full pose detected'
+      : poseQuality === 'partial'
+        ? 'Pose found · move fully into frame'
+        : 'No pose detected'
 
   return (
     <Page
@@ -378,14 +399,16 @@ export default function LiveSession({ stretch, onStop }) {
     >
       <div className="live-grid">
         <section className="card camera-card">
-          <div className={`camera${cameraState === 'active' ? ' camera-active' : ''}`}>
+          <div
+            className={`camera${cameraState === 'active' ? ' camera-active' : ''}${cameraGlowClass}`}
+          >
             <video ref={videoRef} autoPlay muted playsInline aria-label="Live camera preview" />
             <canvas ref={canvasRef} className="pose-canvas" aria-hidden="true" />
             <div className="camera-grid" />
             {cameraState === 'active' && (
-              <div className={`pose-indicator${poseDetected ? ' pose-found' : ''}`} role="status">
+              <div className={`pose-indicator pose-${poseQuality}`} role="status">
                 <i />
-                {poseDetected ? 'MediaPipe pose detected' : 'MediaPipe is looking for a pose'}
+                {poseStatusLabel}
               </div>
             )}
             {cameraState !== 'active' ? (
@@ -407,9 +430,11 @@ export default function LiveSession({ stretch, onStop }) {
               <span>
                 <small>MOVEMENT DETECTION</small>
                 {cameraState === 'active'
-                  ? poseDetected
-                    ? '● POSE DETECTED'
-                    : '● FINDING POSE'
+                  ? poseQuality === 'ready'
+                    ? '● POSE READY'
+                    : poseQuality === 'partial'
+                      ? '● ALMOST THERE'
+                      : '● FINDING POSE'
                   : cameraState === 'starting'
                     ? '● LOADING MODEL'
                     : '○ CAMERA OFF'}

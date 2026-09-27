@@ -647,6 +647,10 @@ main {
   background:
     radial-gradient(circle at 50% 65%, rgba(33, 182, 126, 0.16), transparent 35%),
     linear-gradient(145deg, #14251f, #09130f);
+  border: 1px solid transparent;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 .camera video {
   position: absolute;
@@ -1256,11 +1260,32 @@ main {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ffb17d;
+  background: #ef6f62;
   box-shadow: 0 0 10px currentColor;
 }
-.pose-indicator.pose-found i {
-  background: #d7a7bd;
+.pose-indicator.pose-partial i {
+  background: #e7b94f;
+}
+.pose-indicator.pose-ready i {
+  background: #50b981;
+}
+.camera.pose-glow-missing {
+  border-color: rgba(239, 111, 98, 0.88);
+  box-shadow:
+    0 0 0 1px rgba(239, 111, 98, 0.24),
+    0 0 30px rgba(239, 111, 98, 0.38);
+}
+.camera.pose-glow-partial {
+  border-color: rgba(231, 185, 79, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(231, 185, 79, 0.25),
+    0 0 30px rgba(231, 185, 79, 0.4);
+}
+.camera.pose-glow-ready {
+  border-color: rgba(80, 185, 129, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(80, 185, 129, 0.24),
+    0 0 30px rgba(80, 185, 129, 0.4);
 }
 .camera-caption {
   z-index: 3;
