@@ -1219,3 +1219,107 @@ main {
 .mobile-nav {
   background: rgba(250, 247, 239, 0.95);
 }
+.camera.camera-active video {
+  opacity: 0.82;
+}
+.pose-canvas {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.camera-grid {
+  z-index: 1;
+  pointer-events: none;
+}
+.pose-indicator {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: #fff8f2;
+  background: rgba(35, 25, 31, 0.84);
+  font-size: 10px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+.pose-indicator i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffb17d;
+  box-shadow: 0 0 10px currentColor;
+}
+.pose-indicator.pose-found i {
+  background: #50e3a4;
+}
+.camera-caption {
+  z-index: 3;
+}
+.camera-prompt {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 11px;
+  width: min(90%, 360px);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.camera-prompt p {
+  margin: 0;
+  color: #f1e7eb;
+  font-size: 13px;
+}
+.camera-prompt button,
+.camera-stop {
+  padding: 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: #f1e7eb;
+  background: rgba(35, 25, 31, 0.84);
+  backdrop-filter: blur(10px);
+}
+.camera-prompt button:disabled {
+  cursor: wait;
+  opacity: 0.75;
+}
+.camera-prompt small {
+  color: #ffd2c9;
+  font-size: 11px;
+}
+.camera-stop {
+  position: absolute;
+  z-index: 4;
+  top: 14px;
+  right: 14px;
+  padding: 8px 12px;
+  font-size: 10px;
+}
+.form-good.form-warning {
+  border-color: rgba(223, 128, 109, 0.35);
+  background: rgba(223, 128, 109, 0.09);
+}
+.form-good.form-warning > b {
+  color: #bd5e4b;
+  background: rgba(223, 128, 109, 0.13);
+}
+.form-good.form-neutral {
+  border-color: rgba(125, 95, 114, 0.18);
+  background: rgba(125, 95, 114, 0.045);
+}
+.form-good.form-neutral > b {
+  color: #83777b;
+  background: rgba(125, 95, 114, 0.08);
+}
