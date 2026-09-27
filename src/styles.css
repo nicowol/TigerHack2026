@@ -1270,22 +1270,58 @@ main {
   background: #50b981;
 }
 .camera.pose-glow-missing {
-  border-color: rgba(239, 111, 98, 0.88);
+  border: 3px solid rgba(239, 92, 82, 0.98);
   box-shadow:
-    0 0 0 1px rgba(239, 111, 98, 0.24),
-    0 0 30px rgba(239, 111, 98, 0.38);
+    0 0 0 2px rgba(239, 92, 82, 0.22),
+    0 0 24px rgba(239, 92, 82, 0.72),
+    0 0 52px rgba(239, 92, 82, 0.42),
+    inset 0 0 26px rgba(239, 92, 82, 0.25);
+  animation: pose-glow-pulse-red 1.8s ease-in-out infinite;
 }
 .camera.pose-glow-partial {
-  border-color: rgba(231, 185, 79, 0.9);
+  border: 3px solid rgba(241, 188, 55, 0.98);
   box-shadow:
-    0 0 0 1px rgba(231, 185, 79, 0.25),
-    0 0 30px rgba(231, 185, 79, 0.4);
+    0 0 0 2px rgba(241, 188, 55, 0.24),
+    0 0 24px rgba(241, 188, 55, 0.7),
+    0 0 52px rgba(241, 188, 55, 0.4),
+    inset 0 0 26px rgba(241, 188, 55, 0.23);
+  animation: pose-glow-pulse-yellow 1.8s ease-in-out infinite;
 }
 .camera.pose-glow-ready {
-  border-color: rgba(80, 185, 129, 0.9);
+  border: 3px solid rgba(54, 196, 119, 0.98);
   box-shadow:
-    0 0 0 1px rgba(80, 185, 129, 0.24),
-    0 0 30px rgba(80, 185, 129, 0.4);
+    0 0 0 2px rgba(54, 196, 119, 0.24),
+    0 0 26px rgba(54, 196, 119, 0.72),
+    0 0 56px rgba(54, 196, 119, 0.42),
+    inset 0 0 28px rgba(54, 196, 119, 0.24);
+  animation: pose-glow-pulse-green 2s ease-in-out infinite;
+}
+@keyframes pose-glow-pulse-red {
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(239, 92, 82, 0.3),
+      0 0 34px rgba(239, 92, 82, 0.85),
+      0 0 68px rgba(239, 92, 82, 0.5),
+      inset 0 0 34px rgba(239, 92, 82, 0.32);
+  }
+}
+@keyframes pose-glow-pulse-yellow {
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(241, 188, 55, 0.31),
+      0 0 34px rgba(241, 188, 55, 0.84),
+      0 0 68px rgba(241, 188, 55, 0.48),
+      inset 0 0 34px rgba(241, 188, 55, 0.3);
+  }
+}
+@keyframes pose-glow-pulse-green {
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(54, 196, 119, 0.31),
+      0 0 36px rgba(54, 196, 119, 0.86),
+      0 0 72px rgba(54, 196, 119, 0.5),
+      inset 0 0 36px rgba(54, 196, 119, 0.31);
+  }
 }
 .camera-caption {
   z-index: 3;
@@ -1361,12 +1397,20 @@ main {
   font-size: 13px;
 }
 .form-good.form-warning {
-  border-color: rgba(223, 128, 109, 0.35);
-  background: rgba(223, 128, 109, 0.09);
+  border-color: rgba(241, 188, 55, 0.48);
+  background: rgba(241, 188, 55, 0.11);
 }
 .form-good.form-warning > b {
-  color: #bd5e4b;
-  background: rgba(223, 128, 109, 0.13);
+  color: #a97600;
+  background: rgba(241, 188, 55, 0.17);
+}
+.form-good.form-error {
+  border-color: rgba(239, 92, 82, 0.45);
+  background: rgba(239, 92, 82, 0.1);
+}
+.form-good.form-error > b {
+  color: #bd493f;
+  background: rgba(239, 92, 82, 0.15);
 }
 .form-good.form-neutral {
   border-color: rgba(125, 95, 114, 0.18);

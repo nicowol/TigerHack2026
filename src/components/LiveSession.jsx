@@ -332,13 +332,19 @@ export default function LiveSession({ stretch, onStop }) {
   }
 
   const formRule = getFormRule(stretch.id)
-  const formNeedsAttention =
-    cameraState === 'error' ||
-    (cameraState === 'active' &&
-      (!poseDetected ||
-        formAssessment?.status === 'adjust' ||
-        formAssessment?.status === 'unknown'))
   const activeAssessment = cameraState === 'active' && poseDetected ? formAssessment : null
+  const cameraFeedbackState =
+    cameraState !== 'active'
+      ? 'off'
+      : !poseDetected
+        ? 'missing'
+        : !formRule
+          ? poseQuality === 'ready'
+            ? 'ready'
+            : 'partial'
+          : !activeAssessment || activeAssessment.status !== 'pass'
+            ? 'partial'
+            : 'ready'
   const formTitle =
     cameraState === 'starting'
       ? 'Connecting camera'
@@ -373,22 +379,32 @@ export default function LiveSession({ stretch, onStop }) {
               : activeAssessment
                 ? `${activeAssessment.cameraTip} ${activeAssessment.message}`
                 : `${formRule.cameraTip} Hold steady briefly while the pose is read.`
-  const formStatusClass = formNeedsAttention
-    ? ' form-warning'
-    : activeAssessment?.status === 'tracking-only'
-      ? ' form-neutral'
-      : ''
-  const formStatusIcon = formNeedsAttention
-    ? '!'
-    : activeAssessment?.status === 'tracking-only'
-      ? '•'
-      : '✓'
-  const cameraGlowClass = cameraState === 'active' ? ` pose-glow-${poseQuality}` : ''
+  const formStatusClass =
+    cameraState === 'error' || cameraFeedbackState === 'missing'
+      ? ' form-error'
+      : cameraFeedbackState === 'partial'
+        ? ' form-warning'
+        : activeAssessment?.status === 'tracking-only'
+          ? ' form-neutral'
+          : ''
+  const formStatusIcon =
+    cameraState === 'error' || cameraFeedbackState === 'missing'
+      ? '!'
+      : cameraFeedbackState === 'partial'
+        ? '⌁'
+        : activeAssessment?.status === 'tracking-only'
+          ? '•'
+          : '✓'
+  const cameraGlowClass = cameraFeedbackState === 'off' ? '' : ` pose-glow-${cameraFeedbackState}`
   const poseStatusLabel =
-    poseQuality === 'ready'
-      ? 'Full pose detected'
-      : poseQuality === 'partial'
-        ? 'Pose found · move fully into frame'
+    cameraFeedbackState === 'ready'
+      ? formRule
+        ? 'Pose and form on track'
+        : 'Full pose detected'
+      : cameraFeedbackState === 'partial'
+        ? activeAssessment?.status === 'adjust'
+          ? 'Pose detected · adjust form'
+          : 'Pose found · hold steady'
         : 'No pose detected'
 
   return (
@@ -406,7 +422,7 @@ export default function LiveSession({ stretch, onStop }) {
             <canvas ref={canvasRef} className="pose-canvas" aria-hidden="true" />
             <div className="camera-grid" />
             {cameraState === 'active' && (
-              <div className={`pose-indicator pose-${poseQuality}`} role="status">
+              <div className={`pose-indicator pose-${cameraFeedbackState}`} role="status">
                 <i />
                 {poseStatusLabel}
               </div>
@@ -430,9 +446,9 @@ export default function LiveSession({ stretch, onStop }) {
               <span>
                 <small>MOVEMENT DETECTION</small>
                 {cameraState === 'active'
-                  ? poseQuality === 'ready'
+                  ? cameraFeedbackState === 'ready'
                     ? '● POSE READY'
-                    : poseQuality === 'partial'
+                    : cameraFeedbackState === 'partial'
                       ? '● ALMOST THERE'
                       : '● FINDING POSE'
                   : cameraState === 'starting'
