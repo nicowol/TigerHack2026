@@ -70,7 +70,7 @@ export default function Diagnose({ selected, onSelect, onStart, onDetails }) {
       </section>
 
       <p className="disclaimer results-disclaimer">
-        ◇ FlexFlow offers general mobility guidance, not medical diagnosis or treatment.
+        ◇ Sumi offers general mobility guidance, not medical diagnosis or treatment.
       </p>
     </Page>
   )

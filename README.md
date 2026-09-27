@@ -1,4 +1,4 @@
-# FlexFlow
+# Sumi
 
 A React + Vite prototype for personalized mobility recommendations and camera-guided stretch sessions.
 

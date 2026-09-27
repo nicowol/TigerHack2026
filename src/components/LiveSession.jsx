@@ -476,8 +476,14 @@ export default function LiveSession({ stretch, onStop }) {
                     : '◎ Camera on'}
             </button>
           </div>
+          <div className="camera-reminder">
+            <span>A gentle reminder</span>
+            Demo checks only look at a few visible body positions. They cannot verify pain,
+            pressure, balance, or contact with a wall or prop. Follow the written cues and stop if
+            anything hurts.
+          </div>
         </section>
-        <aside className="stack">
+        <aside className="stack live-session-panel">
           <section className="card session-card">
             <p className="eyebrow">{formRule ? 'DEMO HEURISTIC' : 'POSE TRACKING'}</p>
             <div className={`form-good${formStatusClass}`} aria-live="polite">
@@ -503,14 +509,6 @@ export default function LiveSession({ stretch, onStop }) {
             <button className="primary session-button" onClick={toggleSession}>
               {isRunning ? 'Ⅱ Pause stretch' : seconds === 0 ? '✓ Complete' : '▶ Begin stretch'}
             </button>
-          </section>
-          <section className="card reminder">
-            <p className="eyebrow">A GENTLE REMINDER</p>
-            <p>
-              Demo checks only look at a few visible body positions. They cannot verify pain,
-              pressure, balance, or contact with a wall or prop. Follow the written cues and stop if
-              anything hurts.
-            </p>
           </section>
         </aside>
       </div>
