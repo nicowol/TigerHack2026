@@ -1,0 +1,117 @@
+.pose-illustration {
+  width: min(280px, 78%);
+  height: 145px;
+  overflow: visible;
+  color: var(--coral);
+}
+.pose-limbs,
+.pose-torso {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pose-limbs {
+  stroke-width: 4;
+}
+.pose-torso {
+  stroke-width: 5;
+}
+.pose-head {
+  fill: #f7f3ea;
+  stroke: currentColor;
+  stroke-width: 3;
+}
+.pose-face {
+  fill: none;
+  stroke: #9b7a8f;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.pose-support {
+  fill: none;
+  stroke: rgba(125, 95, 114, 0.42);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+  stroke-linecap: round;
+}
+.demo-figure figcaption {
+  position: absolute;
+  right: 13px;
+  bottom: 11px;
+  color: #8b6a7f;
+  font-size: 8px;
+  text-align: right;
+}
+
+.pose-neck {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.pose-motion {
+  transform-box: view-box;
+  animation-duration: 4.8s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.pose-illustration.motion-active .pose-motion {
+  animation-play-state: running;
+}
+.pose-motion-head {
+  animation-name: neck-stretch-demo;
+  animation-duration: 4.4s;
+}
+.pose-motion-arms {
+  animation-name: arm-stretch-demo;
+  animation-duration: 3.3s;
+}
+.pose-motion-torso {
+  animation-name: torso-stretch-demo;
+  animation-duration: 4s;
+}
+.pose-motion-legs {
+  animation-name: leg-stretch-demo;
+  animation-duration: 3.4s;
+}
+@keyframes neck-stretch-demo {
+  0%, 100% { transform: rotate(0deg); }
+  38%, 62% { transform: rotate(-8deg); }
+}
+@keyframes arm-stretch-demo {
+  0%, 100% { transform: rotate(0deg); }
+  38%, 62% { transform: rotate(14deg); }
+}
+@keyframes torso-stretch-demo {
+  0%, 100% { transform: rotate(0deg); }
+  38%, 62% { transform: rotate(-6deg); }
+}
+@keyframes leg-stretch-demo {
+  0%, 100% { transform: rotate(0deg); }
+  38%, 62% { transform: rotate(10deg); }
+}
+.modal-description {
+  margin: 4px 0 10px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.motion-toggle {
+  position: absolute;
+  top: 11px;
+  right: 12px;
+  border: 1px solid rgba(125, 95, 114, 0.25);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pose-illustration.motion-active .pose-motion {
+    animation-duration: 5.5s;
+  }
+}
