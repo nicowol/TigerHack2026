@@ -37,7 +37,7 @@ export default function Library({ onStart, onDetails }) {
             </div>
             <p className="eyebrow">{stretch.muscle}</p>
             <h2>{stretch.name}</h2>
-            <p>{stretch.instructions}</p>
+            <p>{stretch.description}</p>
             <div className="meta">
               ◷ {stretch.duration} sec <i /> {stretch.difficulty} <i /> {stretch.equipment}
             </div>

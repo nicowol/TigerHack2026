@@ -48,8 +48,8 @@ export default function Diagnose({ selected, onSelect, onStart, onDetails }) {
 
               <h3>{stretch.name}</h3>
               <p className="helps-with">
-                <strong>Helps with</strong>
-                {stretch.helpsWith}
+                <strong>About this stretch</strong>
+                {stretch.description}
               </p>
 
               <div className="meta">

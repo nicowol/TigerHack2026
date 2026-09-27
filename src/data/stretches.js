@@ -4,6 +4,8 @@ export const stretchGroups = [
     label: 'Chest',
     area: 'Chest',
     muscle: 'Pectoral muscles',
+    description:
+      'The chest muscles span the front of your upper body and help bring your arms across your body and support pushing movements.',
     setup: 'Keep your ribs comfortably stacked over your hips and let your shoulders stay relaxed.',
     stretches: [
       [
@@ -93,6 +95,8 @@ export const stretchGroups = [
     label: 'Shoulders',
     area: 'Shoulders',
     muscle: 'Deltoids and rotator cuff',
+    description:
+      'The shoulder muscles guide your arms through reaching and lifting movements. These stretches focus on gentle, comfortable shoulder motion.',
     setup:
       'Keep the stretch gentle, avoid shrugging, and move only through a comfortable shoulder range.',
     stretches: [
@@ -179,10 +183,104 @@ export const stretchGroups = [
     ],
   },
   {
+    id: 'neck',
+    label: 'Neck',
+    area: 'Neck',
+    muscle: 'Cervical muscles',
+    description:
+      'Neck muscles support and move your head. These gentle stretches use small, controlled motions; stop if you feel pain, dizziness, numbness, or tingling.',
+    setup:
+      'Sit or stand comfortably with your shoulders relaxed. Keep every movement small and pain-free; avoid pulling on your head or making full neck circles.',
+    stretches: [
+      [
+        'Seated Chin-to-Chest Stretch',
+        'Sit tall and slowly lower your chin toward your chest until you feel a light stretch at the back of your neck.',
+      ],
+      [
+        'Gentle Side Neck Stretch',
+        'Keep one shoulder relaxed and tilt your opposite ear toward that shoulder without turning your head.',
+      ],
+      [
+        'Upper Trapezius Neck Stretch',
+        'Sit on one hand to keep that shoulder down, then gently tilt your head away from that side.',
+      ],
+      [
+        'Levator Scapulae Neck Stretch',
+        'Turn your head slightly and look toward your armpit, letting the back corner of your neck lengthen.',
+      ],
+      [
+        'Seated Neck Rotation',
+        'Turn your head slowly to one side as if looking over your shoulder, then return to center and switch sides.',
+      ],
+      [
+        'Small Chin Tuck',
+        'Look straight ahead and glide your chin gently backward to make a small double-chin shape, then relax.',
+      ],
+      [
+        'Supported Neck Flexion',
+        'Rest your hands lightly on your chest and nod your chin down a little without using your hands to pull.',
+      ],
+      [
+        'Supine Neck Rotation',
+        'Lie on your back with your head supported and slowly turn your face a short distance to each side.',
+      ],
+      [
+        'Seated Diagonal Neck Stretch',
+        'Turn your face slightly toward one side and angle your gaze down until the opposite back side of your neck lengthens.',
+      ],
+      [
+        'Shoulder-Anchored Side Neck Stretch',
+        'Hold the edge of your chair with one hand, let that shoulder stay heavy, and tilt your head away gently.',
+      ],
+      [
+        'Side-to-Side Neck Glide',
+        'Keep your nose facing forward and move your head a small distance sideways, then return to the middle.',
+      ],
+      [
+        'Seated Neck-Lengthening Reach',
+        'Sit tall, imagine the crown of your head rising, and gently draw your chin back while keeping your jaw relaxed.',
+      ],
+      [
+        'Gentle Scalene Side Stretch',
+        'Keep one shoulder relaxed and angle your head slightly away and upward only if that motion feels comfortable.',
+      ],
+      [
+        'Supine Chin Nod',
+        'Lie on your back and make a tiny nod as if saying yes, keeping the back of your head supported.',
+      ],
+      [
+        'Seated Neck Side Bend with Support',
+        'Rest one hand on your thigh, sit tall, and tip your head toward the other side without lifting your shoulder.',
+      ],
+      [
+        'Easy Neck Rotation Pair',
+        'Slowly turn your head to the left and right within a comfortable range, pausing briefly at each side.',
+      ],
+      [
+        'Relaxed Neck Flexion Hold',
+        'Let your chin move gently toward your chest and allow the back of your neck to soften without rounding your whole back.',
+      ],
+      [
+        'Wall-Supported Chin Glide',
+        'Stand with your upper back near a wall and glide your chin straight backward while keeping your gaze level.',
+      ],
+      [
+        'Shoulder-Down Neck Lengthener',
+        'Let both shoulders fall away from your ears and gently lengthen the space between your shoulders and jaw.',
+      ],
+      [
+        'Neutral Neck Breathing Reset',
+        'Rest your head in a comfortable, centered position and take slow breaths while releasing tension in your jaw and shoulders.',
+      ],
+    ],
+  },
+  {
     id: 'upperArms',
     label: 'Upper arms',
     area: 'Upper arms',
     muscle: 'Biceps and triceps',
+    description:
+      'The biceps and triceps run along the upper arm and help bend and straighten the elbow. Several also assist with shoulder movement.',
     setup:
       'Keep your elbow and wrist comfortable; ease off if you feel joint pressure or tingling.',
     stretches: [
@@ -273,6 +371,8 @@ export const stretchGroups = [
     label: 'Forearms',
     area: 'Forearms and wrists',
     muscle: 'Wrist flexors and extensors',
+    description:
+      'Forearm muscles move the wrists and fingers. Gentle wrist and hand stretches can ease stiffness from gripping or repeated typing.',
     setup:
       'Use light hand pressure only; stop if you notice numbness, pins and needles, or sharp pain.',
     stretches: [
@@ -363,6 +463,8 @@ export const stretchGroups = [
     label: 'Upper back',
     area: 'Upper back',
     muscle: 'Rhomboids and trapezius',
+    description:
+      'The upper-back muscles support the shoulder blades and help with reaching and turning. These movements gently open the space across your back.',
     setup:
       'Let your neck stay long and keep every movement smooth rather than pulling on your head.',
     stretches: [
@@ -453,6 +555,8 @@ export const stretchGroups = [
     label: 'Lower back',
     area: 'Lower back',
     muscle: 'Lumbar muscles',
+    description:
+      'The lower-back muscles support your trunk as you sit, stand, and bend. Move gently and stay within a comfortable range.',
     setup:
       'Move within an easy range and keep the motion comfortable; do not force a deep spinal twist.',
     stretches: [
@@ -543,6 +647,8 @@ export const stretchGroups = [
     label: 'Core',
     area: 'Core and sides',
     muscle: 'Abdominals and obliques',
+    description:
+      'The abdominal and side-body muscles help support and rotate your trunk. These stretches focus on easy side reaches and gentle rotation.',
     setup: 'Breathe freely, keep your hips steady, and avoid pushing into a deep backbend.',
     stretches: [
       [
@@ -632,6 +738,8 @@ export const stretchGroups = [
     label: 'Hips and glutes',
     area: 'Hips and glutes',
     muscle: 'Hip flexors and gluteal muscles',
+    description:
+      'The hip and glute muscles help move and steady your legs. These stretches explore comfortable motion at the front, sides, and back of the hips.',
     setup:
       'Use padding under your knees if needed and keep the stretch mild around the front of the hip.',
     stretches: [
@@ -722,6 +830,8 @@ export const stretchGroups = [
     label: 'Hamstrings',
     area: 'Back of thighs',
     muscle: 'Hamstrings',
+    description:
+      'The hamstrings run along the backs of your thighs and help bend your knees and move your hips. A soft knee is fine during these stretches.',
     setup:
       'Keep a small bend in the knee if needed and hinge at the hip rather than rounding to reach farther.',
     stretches: [
@@ -812,6 +922,8 @@ export const stretchGroups = [
     label: 'Calves and ankles',
     area: 'Calves and ankles',
     muscle: 'Gastrocnemius and soleus',
+    description:
+      'The calf muscles help point your feet and support ankle movement. These stretches use comfortable, supported positions for your lower legs.',
     setup:
       'Keep your heel supported and toes facing mostly forward; use a wall or chair for balance.',
     stretches: [
@@ -902,6 +1014,7 @@ export const stretchGroups = [
 const BODY_AREA_BY_GROUP = {
   chest: 'chest',
   shoulders: 'shoulders',
+  neck: 'neck',
   upperArms: 'arms',
   forearms: 'forearms',
   upperBack: 'back',
@@ -918,29 +1031,168 @@ function inferEquipment(name) {
   return EQUIPMENT_KEYWORDS.find((item) => name.includes(item)) ?? 'None'
 }
 
+const DIFFICULT_STRETCH_NAMES = /supported pigeon pose|standing glute stretch|standing figure-four|standing cross-leg hamstring|half-split hamstring|wall-supported hamstring raise|elevated heel hamstring|low lunge hip opener|standing quad-and-hip stretch|side-lying quad and hip|adductor rock-back|downward dog calf pedal|step-edge calf lower|step-supported heel drop|reverse prayer wrist|prone supported chest lift|thread-the-needle|supine knee-to-opposite-shoulder|supine hip external rotation|supine hip adductor release|wide-knee child|supine bent-knee hamstring|supine bent-knee hamstring ease|modified sphinx|supported low cobra|supine floor snow angel/i
+
+const BEGINNER_STRETCH_NAMES = new Set([
+  'Doorway Pec Stretch',
+  'Seated Hands-Clasped Chest Opener',
+  'Standing Low-Arm Chest Stretch',
+  'Supine Towel Chest Opener',
+  'Seated Wide-Arm Chest Opener',
+  'Standing Chest Sweep',
+  'Seated Towel Chest Opener',
+  'Wall-Supported Wide Chest Stretch',
+  'Cross-Body Shoulder Stretch',
+  'Shoulder Pendulum',
+  'Wall-Assisted Shoulder Flexion',
+  'Gentle Shoulder Rolls',
+  'Supported Cross-Body Shoulder Hold',
+  'Seated Shoulder Blade Reach',
+  'Easy Arm Pendulum Sweep',
+  'Seated Chin-to-Chest Stretch',
+  'Gentle Side Neck Stretch',
+  'Seated Neck Rotation',
+  'Small Chin Tuck',
+  'Supported Neck Flexion',
+  'Supine Neck Rotation',
+  'Side-to-Side Neck Glide',
+  'Seated Neck-Lengthening Reach',
+  'Supine Chin Nod',
+  'Easy Neck Rotation Pair',
+  'Relaxed Neck Flexion Hold',
+  'Shoulder-Down Neck Lengthener',
+  'Neutral Neck Breathing Reset',
+  'Overhead Triceps Stretch',
+  'Seated Overhead Triceps Reach',
+  'Cross-Body Triceps Reach',
+  'Seated Towel Triceps Reach',
+  'Cross-Body Upper-Arm Release',
+  'Seated Overhead Arm Lengthener',
+  'Wrist Flexor Stretch',
+  'Wrist Extensor Stretch',
+  'Prayer Wrist Stretch',
+  'Fist-to-Finger Wrist Glides',
+  'One-at-a-Time Finger Extension',
+  'Thumb Web-Space Stretch',
+  'Finger Fan and Relax',
+  'Wrist Circles',
+  'Loose Hand Shake-Out',
+  'Wrist Side-to-Side Glide',
+  'Upper Back Hug',
+  'Seated Thoracic Flexion',
+  'Cat-Cow Back Mobility',
+  'Seated Chair Back Reach',
+  'Seated Rounded-Back Reach',
+  'Wall Upper-Back Reach',
+  'Supine Shoulder-Blade Spread',
+  'Child’s Pose Diagonal Reach',
+  'Knees-to-Chest Release',
+  'Child’s Pose Lower-Back Rest',
+  'Pelvic Tilt and Release',
+  'Seated Forward Hinge',
+  'Resting Constructive Position',
+  'Supine Both-Knees Sway',
+  'Supported Child’s Pose Rest',
+  'Seated Pelvic Rock',
+  'All-Fours Neutral Spine Rock',
+  'Seated Side Reach for the Low Back',
+  'Chair-Supported Forward Rest',
+  'Supine Hip-and-Back Relaxation',
+  'Standing Side Body Reach',
+  'Seated Gentle Twist',
+  'Kneeling Side Reach',
+  'Side-Lying Open Reach',
+  'Seated Rib Expansion',
+  'Supine Side Reach',
+  'Standing Gentle Trunk Turn',
+  'Prone Abdominal Rest Stretch',
+  'Wall-Supported Side Body Stretch',
+  'Butterfly Inner-Hip Stretch',
+  'Reclined Butterfly Hip Rest',
+  'Supine Figure-Four Hip Stretch',
+  'Seated Figure-Four Glute Stretch',
+  'Supine Hip Adductor Release',
+  'Seated Hamstring Hinge',
+  'Supine Strap Hamstring Stretch',
+  'Seated One-Leg Forward Hinge',
+  'Towel-Supported Seated Hamstring Stretch',
+  'Wall Calf Stretch',
+  'Seated Towel Calf Stretch',
+  'Wall Ankle Mobility Rock',
+  'Seated Ankle Point-and-Flex',
+  'Seated Bent-Knee Calf Stretch',
+  'Standing Heel-Down Ankle Glide',
+  'Wall-Supported Ankle Point and Flex',
+  'Relaxed Calf Rock',
+])
+
+function inferDifficulty(name) {
+  if (DIFFICULT_STRETCH_NAMES.test(name)) return 'Difficult'
+  return BEGINNER_STRETCH_NAMES.has(name) ? 'Beginner' : 'Intermediate'
+}
+
+function describeDifficulty(description, difficulty, group) {
+  if (difficulty === 'Difficult') {
+    if (['hips', 'hamstrings', 'calves'].includes(group)) {
+      return `${description} Difficult level: enter the longer range gradually, use stable support where available, and stop before discomfort.`
+    }
+    if (group === 'neck') {
+      return `${description} Difficult level: keep the movement small and controlled; never pull on your head or force your neck.`
+    }
+    return `${description} Difficult level: increase the range gradually while keeping your breathing steady and your form controlled.`
+  }
+
+  if (difficulty === 'Beginner') {
+    if (group === 'neck') {
+      return `${description} Beginner level: use a small, comfortable movement and do not pull on your head.`
+    }
+    if (group === 'forearms') {
+      return `${description} Beginner level: use light hand pressure and keep your forearm relaxed.`
+    }
+    return `${description} Beginner level: start with an easy range, breathe steadily, and use support if needed.`
+  }
+
+  if (group === 'neck') {
+    return `${description} Intermediate level: keep the movement small, steady, and pain-free without pulling on your head.`
+  }
+  if (group === 'forearms') {
+    return `${description} Intermediate level: keep your elbow and shoulder relaxed and guide the wrist without forcing it.`
+  }
+  if (['hips', 'hamstrings', 'calves'].includes(group)) {
+    return `${description} Intermediate level: use support as needed and pause at a steady, comfortable stretch.`
+  }
+  return `${description} Intermediate level: move with control and pause at a comfortable end range.`
+}
+
 export const stretches = stretchGroups.flatMap((group) =>
-  group.stretches.map(([name, description], index) => ({
-    id: `${group.id}-${index + 1}`,
-    name,
-    area: group.area,
-    muscle: group.muscle,
-    muscleGroup: group.id,
-    targetAreas: [BODY_AREA_BY_GROUP[group.id]],
-    helpsWith: `Targets ${group.muscle.toLowerCase()} and may help ease general ${group.label.toLowerCase()} tightness or soreness.`,
-    tags: [group.label, group.area, group.muscle, name],
-    difficulty: 'Beginner',
-    type: 'Timed hold',
-    duration: index % 3 === 0 ? 30 : 45,
-    equipment: inferEquipment(name),
-    description,
-    instructions: `${group.setup} Ease into the position described, hold for ${index % 3 === 0 ? 30 : 45} seconds while breathing naturally, then release slowly. Repeat on the other side when applicable.`,
-    cues: [
-      'Stay within a comfortable, pain-free range',
-      'Breathe steadily and avoid bouncing',
-      'Stop if you feel sharp pain, numbness, or tingling',
-    ],
-    warning: 'Stop if you feel sharp pain, numbness, tingling, or increasing discomfort.',
-  })),
+  group.stretches.map(([name, baseDescription], index) => {
+    const difficulty = inferDifficulty(name)
+    const description = describeDifficulty(baseDescription, difficulty, group.id)
+
+    return {
+      id: `${group.id}-${index + 1}`,
+      name,
+      area: group.area,
+      muscle: group.muscle,
+      muscleGroup: group.id,
+      muscleGroupDescription: group.description,
+      targetAreas: [BODY_AREA_BY_GROUP[group.id]],
+      helpsWith: `Targets ${group.muscle.toLowerCase()} and may help ease general ${group.label.toLowerCase()} tightness or soreness.`,
+      tags: [group.label, group.area, group.muscle, name],
+      difficulty,
+      type: 'Timed hold',
+      duration: index % 3 === 0 ? 30 : 45,
+      equipment: inferEquipment(name),
+      description,
+      instructions: `${baseDescription} ${group.setup} Hold gently for ${index % 3 === 0 ? 30 : 45} seconds while breathing comfortably, then release slowly. Repeat on the other side when applicable.`,
+      cues: [
+        'Stay within a comfortable, pain-free range',
+        'Breathe steadily and avoid bouncing',
+        'Stop if you feel sharp pain, numbness, or tingling',
+      ],
+      warning: 'Stop if you feel sharp pain, numbness, tingling, or increasing discomfort.',
+    }
+  }),
 )
 
 export const muscleMap = Object.fromEntries(
