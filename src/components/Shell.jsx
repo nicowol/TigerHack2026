@@ -1,12 +1,25 @@
 const icons = { diagnose: '⌁', library: '▤', live: '◉' }
-export function Header() {
+export function Header({ collapsed, onToggle }) {
   return (
     <header className="header">
       <div className="brand">Sumi</div>
+      <button
+        className="header-sidebar-toggle"
+        onClick={onToggle}
+        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        aria-expanded={!collapsed}
+        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="2" />
+          <path d="M9 4v16" />
+          <path d={collapsed ? 'm13 9 3 3-3 3' : 'm16 9-3 3 3 3'} />
+        </svg>
+      </button>
     </header>
   )
 }
-export function Navigation({ view, onChange, collapsed, onToggle }) {
+export function Navigation({ view, onChange, collapsed }) {
   const items = [
     ['diagnose', 'Find relief'],
     ['library', 'Stretch library'],
@@ -30,18 +43,6 @@ export function Navigation({ view, onChange, collapsed, onToggle }) {
   return (
     <>
       <aside className={`sidebar${collapsed ? ' sidebar-collapsed' : ''}`}>
-        <div className="sidebar-heading">
-          <p className="micro">WORKSPACE</p>
-          <button
-            className="sidebar-toggle"
-            onClick={onToggle}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            aria-expanded={!collapsed}
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {collapsed ? '›' : '‹'}
-          </button>
-        </div>
         <nav>{renderLinks('desktop')}</nav>
         <div className="sidebar-account">
           <b>JD</b>

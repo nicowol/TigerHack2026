@@ -21,12 +21,14 @@ export default function App() {
 
   return (
     <>
-      <Header />
+      <Header
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed((current) => !current)}
+      />
       <Navigation
         view={view}
         onChange={setView}
         collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed((current) => !current)}
       />
       <main className={`main-content${sidebarCollapsed ? ' sidebar-is-collapsed' : ''}`}>
         {view === 'diagnose' && (

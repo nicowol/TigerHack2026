@@ -47,6 +47,7 @@ input:focus-visible,
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 14px;
   padding: 0 30px;
   background: rgba(8, 17, 14, 0.82);
   border-bottom: 1px solid var(--line);
@@ -81,34 +82,30 @@ input:focus-visible,
     width 0.28s ease,
     padding 0.28s ease;
 }
-.sidebar-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 28px;
-  margin-bottom: 4px;
-}
-.sidebar-heading .micro {
-  margin: 0;
-  padding-left: 12px;
-}
-.sidebar-toggle {
+.header-sidebar-toggle {
   display: grid;
   place-items: center;
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 10px;
   color: var(--muted);
   background: rgba(255, 253, 248, 0.58);
-  font-size: 20px;
-  line-height: 1;
   transition: 0.2s;
 }
-.sidebar-toggle:hover {
+.header-sidebar-toggle:hover {
   color: var(--ink);
   background: rgba(255, 253, 248, 0.9);
+}
+.header-sidebar-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .micro,
 .eyebrow {
@@ -209,10 +206,6 @@ main {
   padding-right: 12px;
   padding-left: 12px;
 }
-.sidebar-collapsed .sidebar-heading {
-  justify-content: center;
-}
-.sidebar-collapsed .sidebar-heading .micro,
 .sidebar-collapsed .nav-label,
 .sidebar-collapsed .sidebar-account span {
   display: none;
@@ -995,6 +988,9 @@ main {
     padding: 0 16px;
   }
   .sidebar {
+    display: none;
+  }
+  .header-sidebar-toggle {
     display: none;
   }
   .main-content,
