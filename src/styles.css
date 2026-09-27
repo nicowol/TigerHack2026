@@ -1260,7 +1260,7 @@ main {
   box-shadow: 0 0 10px currentColor;
 }
 .pose-indicator.pose-found i {
-  background: #50e3a4;
+  background: #d7a7bd;
 }
 .camera-caption {
   z-index: 3;
@@ -1277,35 +1277,63 @@ main {
   transform: translate(-50%, -50%);
   text-align: center;
 }
+.camera-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 4px 0;
+}
+.camera-control-copy {
+  min-width: 0;
+}
+.camera-control-copy .privacy {
+  margin: 0;
+}
+.camera-control-copy small {
+  display: block;
+  margin-top: 5px;
+  color: #a45548;
+  font-size: 10px;
+}
+.camera-toggle {
+  flex: none;
+  min-width: 122px;
+  padding: 10px 14px;
+  border: 1px solid rgba(125, 95, 114, 0.2);
+  border-radius: 11px;
+  color: #fffdf8;
+  background: linear-gradient(135deg, #98778b, #735468);
+  font-size: 10px;
+  font-weight: 700;
+  box-shadow: 0 7px 18px rgba(115, 84, 104, 0.16);
+}
+.camera-toggle:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.camera-toggle:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+.camera-toggle-off {
+  color: #735468;
+  background: rgba(125, 95, 114, 0.07);
+  box-shadow: none;
+}
+
+@media (max-width: 720px) {
+  .camera-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .camera-toggle {
+    width: 100%;
+  }
+}
 .camera-prompt p {
   margin: 0;
   color: #f1e7eb;
   font-size: 13px;
-}
-.camera-prompt button,
-.camera-stop {
-  padding: 11px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  color: #f1e7eb;
-  background: rgba(35, 25, 31, 0.84);
-  backdrop-filter: blur(10px);
-}
-.camera-prompt button:disabled {
-  cursor: wait;
-  opacity: 0.75;
-}
-.camera-prompt small {
-  color: #ffd2c9;
-  font-size: 11px;
-}
-.camera-stop {
-  position: absolute;
-  z-index: 4;
-  top: 14px;
-  right: 14px;
-  padding: 8px 12px;
-  font-size: 10px;
 }
 .form-good.form-warning {
   border-color: rgba(223, 128, 109, 0.35);

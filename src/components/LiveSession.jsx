@@ -47,8 +47,8 @@ function drawPose(canvas, video, landmarks) {
   context.lineCap = 'round'
   context.lineJoin = 'round'
   context.lineWidth = Math.max(3, width / 240)
-  context.strokeStyle = 'rgba(80, 227, 164, 0.98)'
-  context.shadowColor = 'rgba(80, 227, 164, 0.85)'
+  context.strokeStyle = 'rgba(215, 167, 189, 0.98)'
+  context.shadowColor = 'rgba(215, 167, 189, 0.8)'
   context.shadowBlur = 12
 
   for (const [start, end] of POSE_CONNECTIONS) {
@@ -393,22 +393,12 @@ export default function LiveSession({ stretch, onStop }) {
                 <p>
                   {cameraState === 'starting'
                     ? 'Starting the camera and pose model…'
-                    : 'Turn on your camera to see your pose.'}
-                </p>
-                <button onClick={enableCamera} disabled={cameraState === 'starting'}>
-                  {cameraState === 'starting'
-                    ? '◌ Connecting…'
                     : cameraState === 'error'
-                      ? '↻ Try camera again'
-                      : '◎ Enable camera'}
-                </button>
-                {cameraError && <small role="alert">{cameraError}</small>}
+                      ? 'Camera unavailable. Use the control below to try again.'
+                      : 'Camera is off. Use the control below to begin.'}
+                </p>
               </div>
-            ) : (
-              <button className="camera-stop" onClick={disableCamera}>
-                Turn camera off
-              </button>
-            )}
+            ) : null}
             <div className="camera-caption">
               <span>
                 <small>CURRENT FLOW</small>
@@ -426,7 +416,25 @@ export default function LiveSession({ stretch, onStop }) {
               </span>
             </div>
           </div>
-          <p className="privacy">◇ Camera and pose processing stay on this device.</p>
+          <div className="camera-toolbar">
+            <div className="camera-control-copy">
+              <p className="privacy">◇ Camera and pose processing stay on this device.</p>
+              {cameraError && <small role="alert">{cameraError}</small>}
+            </div>
+            <button
+              className={`camera-toggle${cameraState === 'active' ? ' camera-toggle-off' : ''}`}
+              onClick={cameraState === 'active' ? disableCamera : enableCamera}
+              disabled={cameraState === 'starting'}
+            >
+              {cameraState === 'starting'
+                ? '◌ Connecting…'
+                : cameraState === 'active'
+                  ? 'Camera off'
+                  : cameraState === 'error'
+                    ? '↻ Try camera again'
+                    : '◎ Camera on'}
+            </button>
+          </div>
         </section>
         <aside className="stack">
           <section className="card session-card">
