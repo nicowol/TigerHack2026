@@ -700,7 +700,7 @@ function movementTargetFor(stretch) {
   if (['upperBack', 'lowerBack', 'core'].includes(group)) return 'torso'
   return 'legs'
 }
-export default function StretchModal({ stretch, onClose, onStart }) {
+export default function StretchModal({ stretch, isQueued, onClose, onStart }) {
   const [motionEnabled, setMotionEnabled] = useState(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return true
     return !window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -828,8 +828,12 @@ export default function StretchModal({ stretch, onClose, onStart }) {
         <p className="stretch-warning">
           <strong>Move safely:</strong> {stretch.warning}
         </p>
-        <button className="primary modal-start" onClick={() => onStart(stretch)}>
-          Start this flow →
+        <button
+          className={`flow-add-button modal-start${isQueued ? ' flow-added' : ''}`}
+          onClick={() => onStart(stretch)}
+          aria-pressed={isQueued}
+        >
+          {isQueued ? '✓ Added · remove' : '＋ Add flow'}
         </button>
       </section>
     </div>

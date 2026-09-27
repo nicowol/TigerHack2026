@@ -2,7 +2,7 @@ import BodyMap from './BodyMap.jsx'
 import { CardTitle, Page } from './PageLayout.jsx'
 import { muscleMap, stretches } from '../data/stretches.js'
 
-export default function Diagnose({ selected, onSelect, onStart, onDetails }) {
+export default function Diagnose({ selected, onSelect, onStart, isQueued, onDetails }) {
   const selectedMuscle = muscleMap[selected]
   const matchingStretches = stretches.filter((stretch) => stretch.targetAreas.includes(selected))
 
@@ -57,8 +57,12 @@ export default function Diagnose({ selected, onSelect, onStart, onDetails }) {
               </div>
 
               <div className="actions">
-                <button className="primary" onClick={() => onStart(stretch)}>
-                  ▶ Start live flow
+                <button
+                  className={`flow-add-button${isQueued(stretch.id) ? ' flow-added' : ''}`}
+                  onClick={() => onStart(stretch)}
+                  aria-pressed={isQueued(stretch.id)}
+                >
+                  {isQueued(stretch.id) ? '✓ Added · remove' : '＋ Add flow'}
                 </button>
                 <button className="secondary" onClick={() => onDetails(stretch)}>
                   Form & details ↗

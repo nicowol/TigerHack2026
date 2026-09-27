@@ -1,7 +1,16 @@
 import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision'
 import { useEffect, useRef, useState } from 'react'
 import { assessStretchForm, getFormRule } from '../data/formAssessment.js'
+import { stretches } from '../data/stretches.js'
 import { Page } from './PageLayout.jsx'
+import PlaylistPlanner from './PlaylistPlanner.jsx'
+
+const stretchById = new Map(stretches.map((stretch) => [stretch.id, stretch]))
+const fallbackStretch = stretches[0]
+
+function formatClock(seconds) {
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
+}
 
 const MEDIAPIPE_VERSION = '1.0.1'
 const WASM_URL = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_VERSION}/wasm`
@@ -86,9 +95,28 @@ function cameraErrorMessage(error) {
   return error?.message || 'The camera could not start. Please try again.'
 }
 
-export default function LiveSession({ stretch, onStop }) {
-  const [seconds, setSeconds] = useState(stretch.duration)
+export default function LiveSession({
+  queue,
+  onQueueChange,
+  presets,
+  onSavePreset,
+  onCompleteStretch,
+  onClearQueue,
+  chimesMuted,
+  onChimesMutedChange,
+  onStop,
+  onFindRelief,
+}) {
+  const [plannerOpen, setPlannerOpen] = useState(true)
+  const [sessionItems, setSessionItems] = useState([])
+  const [sessionActive, setSessionActive] = useState(false)
+  const [sessionFinished, setSessionFinished] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [phase, setPhase] = useState('stretch')
+  const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
+  const [confirmStop, setConfirmStop] = useState(false)
+  const [showCompletion, setShowCompletion] = useState(false)
   const [cameraState, setCameraState] = useState('idle')
   const [cameraError, setCameraError] = useState('')
   const [poseDetected, setPoseDetected] = useState(false)
@@ -106,13 +134,34 @@ export default function LiveSession({ stretch, onStop }) {
   const poseQualityRef = useRef('missing')
   const formAssessmentRef = useRef(null)
   const assessmentCandidateRef = useRef({ key: '', count: 0, value: null })
+  const audioContextRef = useRef(null)
+  const transitionRef = useRef(false)
+  const timerActionsRef = useRef(null)
+  const activeItem = sessionActive
+    ? sessionItems[currentIndex]
+    : sessionFinished
+      ? sessionItems[sessionItems.length - 1]
+      : queue.find((entry) => stretchById.has(entry.stretchId))
+  const stretch = stretchById.get(activeItem?.stretchId) ?? fallbackStretch
+  const stretchDuration = activeItem?.durationSeconds ?? stretch.duration
+  const breakDuration = activeItem?.breakAfterSeconds ?? 0
+  const phaseDuration = phase === 'break' ? breakDuration : stretchDuration
   const stretchIdRef = useRef(stretch.id)
   stretchIdRef.current = stretch.id
 
   useEffect(() => {
-    setSeconds(stretch.duration)
-    setIsRunning(false)
-  }, [stretch])
+    if (!sessionActive && !sessionFinished) {
+      setSeconds(activeItem?.durationSeconds ?? stretch.duration)
+      setPhase('stretch')
+      setIsRunning(false)
+    }
+  }, [
+    activeItem?.durationSeconds,
+    activeItem?.stretchId,
+    sessionActive,
+    sessionFinished,
+    stretch.duration,
+  ])
 
   useEffect(() => {
     formAssessmentRef.current = null
@@ -127,8 +176,8 @@ export default function LiveSession({ stretch, onStop }) {
   }, [isRunning, seconds])
 
   useEffect(() => {
-    if (seconds === 0) setIsRunning(false)
-  }, [seconds])
+    if (sessionActive && seconds === 0) timerActionsRef.current?.advance()
+  }, [seconds, sessionActive])
 
   function updatePoseDetected(nextValue) {
     if (poseDetectedRef.current === nextValue) return
@@ -321,14 +370,160 @@ export default function LiveSession({ stretch, onStop }) {
     setCameraError('')
   }
 
+  function playChime(notes) {
+    if (chimesMuted) return
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext
+      if (!AudioContextClass) return
+      const context = audioContextRef.current ?? new AudioContextClass()
+      audioContextRef.current = context
+      if (context.state === 'suspended') void context.resume()
+      const startAt = context.currentTime + 0.035
+      notes.forEach(({ frequency, offset, length, volume = 0.07, type = 'sine' }) => {
+        const oscillator = context.createOscillator()
+        const gain = context.createGain()
+        oscillator.type = type
+        oscillator.frequency.value = frequency
+        oscillator.detune.value = offset % 2 ? -3 : 3
+        gain.gain.setValueAtTime(0.0001, startAt + offset)
+        gain.gain.exponentialRampToValueAtTime(volume, startAt + offset + 0.025)
+        gain.gain.exponentialRampToValueAtTime(0.0001, startAt + offset + length)
+        oscillator.connect(gain)
+        gain.connect(context.destination)
+        oscillator.start(startAt + offset)
+        oscillator.stop(startAt + offset + length + 0.04)
+      })
+    } catch {
+      // Sound is a small enhancement; timers should continue if audio is unavailable.
+    }
+  }
+
+  function playStretchChime() {
+    // F5, C6, A6: a light arpeggio with a bright upper sparkle.
+    playChime([
+      { frequency: 698.46, offset: 0, length: 0.42, type: 'triangle' },
+      { frequency: 1046.5, offset: 0.11, length: 0.46 },
+      { frequency: 1760, offset: 0.23, length: 0.62, volume: 0.045 },
+    ])
+  }
+
+  function playSetChime() {
+    // A soft F major ninth resolution: F, A, C, E, G.
+    playChime([
+      { frequency: 349.23, offset: 0, length: 0.9, volume: 0.065, type: 'triangle' },
+      { frequency: 440, offset: 0.035, length: 0.9, volume: 0.052 },
+      { frequency: 523.25, offset: 0.07, length: 0.85, volume: 0.05 },
+      { frequency: 659.25, offset: 0.12, length: 0.82, volume: 0.042 },
+      { frequency: 783.99, offset: 0.2, length: 0.75, volume: 0.032 },
+    ])
+  }
+
+  function goToNextStretch(index) {
+    if (index >= sessionItems.length) {
+      setIsRunning(false)
+      setSessionActive(false)
+      setSessionFinished(true)
+      setShowCompletion(true)
+      releaseCameraResources(false)
+      setCameraState('idle')
+      window.setTimeout(playSetChime, 450)
+      return
+    }
+    transitionRef.current = false
+    setCurrentIndex(index)
+    setPhase('stretch')
+    setSeconds(
+      sessionItems[index].durationSeconds ??
+        stretchById.get(sessionItems[index].stretchId)?.duration ??
+        30,
+    )
+    setIsRunning(true)
+  }
+
+  function finishCurrentStretch(withChime = true) {
+    const item = sessionItems[currentIndex]
+    if (!item) return
+    transitionRef.current = true
+    onCompleteStretch(item.stretchId, withChime)
+    if (withChime) playStretchChime()
+    if (currentIndex >= sessionItems.length - 1) {
+      setIsRunning(false)
+      setSessionActive(false)
+      setSessionFinished(true)
+      setShowCompletion(true)
+      releaseCameraResources(false)
+      setCameraState('idle')
+      window.setTimeout(playSetChime, withChime ? 450 : 0)
+      return
+    }
+    if (item.breakAfterSeconds > 0 && withChime) {
+      setPhase('break')
+      setSeconds(item.breakAfterSeconds)
+      setIsRunning(true)
+      transitionRef.current = false
+      return
+    }
+    goToNextStretch(currentIndex + 1)
+  }
+
+  timerActionsRef.current = {
+    advance() {
+      if (!sessionActive || transitionRef.current) return
+      transitionRef.current = true
+      if (phase === 'break') goToNextStretch(currentIndex + 1)
+      else finishCurrentStretch(true)
+    },
+  }
+
+  function startSet() {
+    const items = queue.filter((entry) => stretchById.has(entry.stretchId))
+    if (!items.length) return
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext
+      if (AudioContextClass && !audioContextRef.current)
+        audioContextRef.current = new AudioContextClass()
+    } catch {
+      // Continue without chimes if the browser does not provide Web Audio.
+    }
+    if (audioContextRef.current?.state === 'suspended') void audioContextRef.current.resume()
+    setSessionItems(items.map((entry) => ({ ...entry })))
+    setCurrentIndex(0)
+    setPhase('stretch')
+    setSeconds(items[0].durationSeconds ?? stretchById.get(items[0].stretchId).duration)
+    setShowCompletion(false)
+    setSessionFinished(false)
+    transitionRef.current = false
+    setSessionActive(true)
+    setIsRunning(true)
+    setPlannerOpen(false)
+  }
+
   function toggleSession() {
-    if (seconds === 0) return
+    if (!sessionActive || seconds === 0) return
     setIsRunning((current) => !current)
   }
 
+  function restartTimer() {
+    setSeconds(phaseDuration)
+    transitionRef.current = false
+    setIsRunning(true)
+  }
+
+  function skipCurrent() {
+    if (!sessionActive) return
+    if (phase === 'stretch') finishCurrentStretch(false)
+    else goToNextStretch(currentIndex + 1)
+  }
+
   function stop() {
+    setConfirmStop(false)
     releaseCameraResources()
     onStop()
+  }
+
+  function openPlanner() {
+    if (sessionActive) setIsRunning(false)
+    setPlannerOpen(true)
   }
 
   const formRule = getFormRule(stretch.id)
@@ -406,13 +601,83 @@ export default function LiveSession({ stretch, onStop }) {
           ? 'Pose detected · adjust form'
           : 'Pose found · hold steady'
         : 'No pose detected'
+  const totalSessionSeconds = sessionItems.reduce(
+    (total, item, index) =>
+      total +
+      (item.durationSeconds ?? stretchById.get(item.stretchId)?.duration ?? 0) +
+      (index < sessionItems.length - 1 ? (item.breakAfterSeconds ?? 0) : 0),
+    0,
+  )
+  const elapsedBeforeCurrent = sessionItems
+    .slice(0, currentIndex)
+    .reduce(
+      (total, item) =>
+        total +
+        (item.durationSeconds ?? stretchById.get(item.stretchId)?.duration ?? 0) +
+        (item.breakAfterSeconds ?? 0),
+      0,
+    )
+  const elapsedCurrent =
+    phase === 'break'
+      ? stretchDuration + Math.max(0, breakDuration - seconds)
+      : Math.max(0, stretchDuration - seconds)
+  const globalProgress = sessionFinished
+    ? 100
+    : sessionActive && totalSessionSeconds
+      ? Math.min(100, ((elapsedBeforeCurrent + elapsedCurrent) / totalSessionSeconds) * 100)
+      : 0
+  const upcomingItem =
+    phase === 'break' ? sessionItems[currentIndex + 1] : sessionItems[currentIndex + 1]
+  const upcomingMessage = sessionActive
+    ? phase === 'break'
+      ? upcomingItem
+        ? `Next: ${stretchById.get(upcomingItem.stretchId)?.name ?? 'Next stretch'}`
+        : 'Your set is almost complete'
+      : breakDuration > 0 && currentIndex < sessionItems.length - 1
+        ? `Breathing break · ${breakDuration} sec`
+        : upcomingItem
+          ? (stretchById.get(upcomingItem.stretchId)?.name ?? 'Next stretch')
+          : 'Final stretch in your set'
+    : sessionFinished
+      ? 'Set complete · add another flow when you are ready'
+      : queue.length
+        ? `${queue.length} stretch${queue.length === 1 ? '' : 'es'} ready to plan`
+        : 'Add a stretch to get started'
 
   return (
     <Page
       eyebrow="YOUR LIVE FLOW / 03"
-      title="Find your comfortable edge."
-      subtitle="Ease into the stretch. Let your breath set the pace."
+      title="Your stretch flow."
+      subtitle="Ease into each movement. Let your breath set the pace."
     >
+      <section className="playlist-progress-card" aria-label="Playlist progress">
+        <div className="playlist-progress-labels">
+          <span>
+            {sessionActive
+              ? `STRETCH ${currentIndex + 1} OF ${sessionItems.length}`
+              : sessionFinished
+                ? 'SET COMPLETE'
+                : 'FLOW PROGRESS'}
+          </span>
+          <strong>{Math.round(globalProgress)}%</strong>
+        </div>
+        <div className="playlist-progress-track">
+          <i style={{ width: `${globalProgress}%` }} />
+        </div>
+      </section>
+      <section
+        className={`up-next-card${phase === 'break' && sessionActive ? ' is-break' : ''}`}
+        aria-live="polite"
+      >
+        <span className="up-next-icon">{phase === 'break' && sessionActive ? '☼' : '↗'}</span>
+        <div>
+          <small>{phase === 'break' && sessionActive ? 'TAKE A BREATH' : 'UP NEXT'}</small>
+          <strong>{upcomingMessage}</strong>
+        </div>
+        <button className="secondary" onClick={openPlanner}>
+          Edit flow
+        </button>
+      </section>
       <div className="live-grid">
         <section className="card camera-card">
           <div
@@ -440,8 +705,11 @@ export default function LiveSession({ stretch, onStop }) {
             ) : null}
             <div className="camera-caption">
               <span>
-                <small>CURRENT FLOW</small>
-                {stretch.name}
+                <small>{phase === 'break' && sessionActive ? 'COMING UP' : 'CURRENT FLOW'}</small>
+                {phase === 'break' && sessionActive
+                  ? (stretchById.get(sessionItems[currentIndex + 1]?.stretchId)?.name ??
+                    'Set complete')
+                  : stretch.name}
               </span>
               <span>
                 <small>MOVEMENT DETECTION</small>
@@ -476,6 +744,14 @@ export default function LiveSession({ stretch, onStop }) {
                     : '◎ Camera on'}
             </button>
           </div>
+          <details className="camera-tips">
+            <summary>Camera setup tips</summary>
+            <ul>
+              <li>Place the camera around chest height and face it when possible.</li>
+              <li>Use steady, even lighting so your outline is easy to see.</li>
+              <li>Step back until your head, shoulders, hips, knees, and ankles fit in frame.</li>
+            </ul>
+          </details>
           <div className="camera-reminder">
             <span>A gentle reminder</span>
             Demo checks only look at a few visible body positions. They cannot verify pain,
@@ -485,36 +761,177 @@ export default function LiveSession({ stretch, onStop }) {
         </section>
         <aside className="stack live-session-panel">
           <section className="card session-card">
-            <p className="eyebrow">{formRule ? 'DEMO HEURISTIC' : 'POSE TRACKING'}</p>
+            <div className="session-card-heading">
+              <p className="eyebrow">
+                {phase === 'break' && sessionActive
+                  ? 'CUSTOM BREAK'
+                  : formRule
+                    ? 'DEMO HEURISTIC'
+                    : 'POSE TRACKING'}
+              </p>
+              <button
+                className={`sound-toggle${chimesMuted ? ' sound-muted' : ''}`}
+                onClick={() => onChimesMutedChange((muted) => !muted)}
+                aria-pressed={!chimesMuted}
+                title={chimesMuted ? 'Turn completion chimes on' : 'Mute completion chimes'}
+              >
+                <span aria-hidden="true">{chimesMuted ? '♩̸' : '♫'}</span>
+                {chimesMuted ? 'Sound off' : 'Sound on'}
+              </button>
+            </div>
             <div className={`form-good${formStatusClass}`} aria-live="polite">
               <b>{formStatusIcon}</b>
               <span>
-                <strong>{formTitle}</strong>
-                <small>{formHint}</small>
+                <strong>
+                  {phase === 'break' && sessionActive ? 'Relax and reset' : formTitle}
+                </strong>
+                <small>
+                  {phase === 'break' && sessionActive
+                    ? 'Your next stretch begins when the break timer ends.'
+                    : formHint}
+                </small>
               </span>
             </div>
             <div className="timer">
               <span>
-                <small>TIME LEFT</small>
-                <b>00:{String(seconds).padStart(2, '0')}</b>
+                <small>
+                  {phase === 'break' && sessionActive ? 'BREAK TIME LEFT' : 'TIME LEFT'}
+                </small>
+                <b>{formatClock(seconds)}</b>
               </span>
               <span>
-                <small>FLOW LENGTH</small>
-                {stretch.duration} seconds
+                <small>{phase === 'break' && sessionActive ? 'UP NEXT' : 'STRETCH TIME'}</small>
+                {phase === 'break' && sessionActive
+                  ? 'Next movement'
+                  : `${stretchDuration} seconds`}
               </span>
             </div>
             <div className="progress">
-              <i style={{ width: `${(seconds / stretch.duration) * 100}%` }} />
+              <i style={{ width: `${phaseDuration ? (seconds / phaseDuration) * 100 : 0}%` }} />
             </div>
-            <button className="primary session-button" onClick={toggleSession}>
-              {isRunning ? 'Ⅱ Pause stretch' : seconds === 0 ? '✓ Complete' : '▶ Begin stretch'}
-            </button>
+            <div className="session-controls">
+              <button
+                className="primary session-button"
+                onClick={() => (sessionActive ? toggleSession() : openPlanner())}
+              >
+                {sessionActive ? (isRunning ? 'Ⅱ Pause' : '▶ Resume') : '＋ Plan your flow'}
+              </button>
+              <button
+                className="secondary session-tool-button"
+                onClick={restartTimer}
+                disabled={!sessionActive}
+                aria-label="Restart current timer"
+                title="Restart current timer"
+              >
+                ↻ Restart
+              </button>
+              <button
+                className="secondary session-tool-button"
+                onClick={skipCurrent}
+                disabled={!sessionActive}
+                aria-label="Skip to next stretch"
+                title="Skip to next stretch"
+              >
+                Skip →
+              </button>
+            </div>
+            {sessionActive && (
+              <p className="session-position">
+                {phase === 'break' ? 'Between stretches' : `Now stretching · ${stretch.name}`}
+              </p>
+            )}
           </section>
         </aside>
       </div>
-      <button className="stop" onClick={stop}>
-        × Stop session &amp; return
-      </button>
+      {(sessionActive || queue.length > 0) && (
+        <button
+          className="stop stop-session-button"
+          onClick={() => {
+            setIsRunning(false)
+            setConfirmStop(true)
+          }}
+        >
+          × Stop session
+        </button>
+      )}
+      {plannerOpen && (
+        <PlaylistPlanner
+          queue={queue}
+          onQueueChange={onQueueChange}
+          presets={presets}
+          onSavePreset={onSavePreset}
+          onClearQueue={onClearQueue}
+          onLoadPreset={(preset) => onQueueChange(preset.entries)}
+          onClose={() => setPlannerOpen(false)}
+          onStart={startSet}
+          onBrowse={() => {
+            setPlannerOpen(false)
+            onFindRelief()
+          }}
+        />
+      )}
+      {confirmStop && (
+        <div
+          className="dialog-overlay"
+          role="presentation"
+          onMouseDown={() => setConfirmStop(false)}
+        >
+          <section
+            className="card confirm-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="stop-dialog-title"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <span className="dialog-mark">Ⅱ</span>
+            <h2 id="stop-dialog-title">Stop this session?</h2>
+            <p>
+              Completed stretches will be removed from this flow. Anything you have not finished
+              will stay in your queue.
+            </p>
+            <div className="dialog-actions">
+              <button className="secondary" onClick={() => setConfirmStop(false)}>
+                Keep stretching
+              </button>
+              <button className="danger-button" onClick={stop}>
+                Stop session
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+      {showCompletion && (
+        <div className="dialog-overlay completion-overlay" role="presentation">
+          <section
+            className="card confirm-dialog completion-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="completion-title"
+          >
+            <span className="completion-sparkle">✦</span>
+            <p className="eyebrow">FLOW COMPLETE</p>
+            <h2 id="completion-title">Beautiful work.</h2>
+            <p>
+              You made space for yourself and completed your whole set. Take a moment to notice how
+              you feel.
+            </p>
+            <div className="dialog-actions">
+              <button className="secondary" onClick={() => setShowCompletion(false)}>
+                Close
+              </button>
+              <button
+                className="primary"
+                onClick={() => {
+                  setShowCompletion(false)
+                  onFindRelief()
+                }}
+              >
+                Back to Find relief
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </Page>
   )
 }
